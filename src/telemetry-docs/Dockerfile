@@ -7,6 +7,7 @@
 FROM docker.io/otel/weaver:v0.25.1@sha256:9ad46ca9cd4fa5974b121f886aa3e9946a8ef8ea905001a96c018d21f9db87ca AS registry-builder
 
 WORKDIR /workspace
+USER root
 
 # Copy the telemetry schema
 COPY telemetry-schema /workspace/telemetry-schema
@@ -51,6 +52,7 @@ USER 101
 COPY --from=site-builder /app/site /static
 COPY src/telemetry-docs/nginx.conf.template /nginx.conf.template
 
+ARG TELEMETRY_DOCS_PORT=8000
 EXPOSE ${TELEMETRY_DOCS_PORT}
 
 STOPSIGNAL SIGQUIT
